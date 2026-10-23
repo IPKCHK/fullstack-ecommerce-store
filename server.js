@@ -14,6 +14,7 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app=express();
+app.set("trust proxy", 1); // <-- Required for Render's architecture
 const PORT=process.env.PORT || 3000;
 const frontendURL = process.env.FRONTEND_URL
 
