@@ -3,12 +3,12 @@ import helmet from "helmet"
 import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
-import productRoutes from "./routes/productsRoutes.js"
-import authRoutes from "./routes/authRoutes.js"
-import { sql } from "./config/db.js";
-import { aj } from "./lib/arcjet.js";
-import cartRoutes from "./routes/cartRoutes.js";
-import orderRoutes from "./routes/orderRoutes.js";
+import productRoutes from "./backend/routes/productsRoutes.js"
+import authRoutes from "./backend/routes/authRoutes.js"
+import { sql } from "./backend/config/db.js";
+import { aj } from "./backend/lib/arcjet.js";
+import cartRoutes from "./backend/routes/cartRoutes.js";
+import orderRoutes from "./backend/routes/orderRoutes.js";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
