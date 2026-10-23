@@ -1,0 +1,133 @@
+.orders-page {
+    min-height: 90vh;
+    padding: 40px 50px;
+}
+
+.orders-page h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.order-card {
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.order-card h3 {
+    margin-bottom: 15px;
+}
+
+.order-card p {
+    margin: 8px 0;
+}
+
+.second-button {
+    border: none;
+    font-size: 16px;
+    width: 150px;
+    height: 45px;
+    border-radius: 25px;
+    margin-top: 10px;
+    margin-left: 40px;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+.second-button:hover{
+    background-color: white;
+    color: green;
+}
+
+.new-button {
+    border: none;
+    font-size: 16px;
+    width: 150px;
+    height: 45px;
+    border-radius: 25px;
+    margin-top: 10px;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+.new-button:hover{
+    background-color: white;
+    color: green;
+}
+
+/* Header styling */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.order-date {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Product list styling */
+.order-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.order-product {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Keep the image small and professional */
+.order-product img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.order-product-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+
+.order-product-details p {
+    margin: 0;
+    color: #555;
+    font-size: 14px;
+}
+
+/* Footer styling */
+.order-footer {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    text-align: right;
+}
+
+.price-math {
+    color: #666666;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+}
+
+.price-math strong {
+    color: #000000; 
+}

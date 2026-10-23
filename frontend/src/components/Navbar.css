@@ -1,0 +1,90 @@
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    height: 50px;
+    width: 100%;
+}
+.logo {
+  font-family: 'Dancing Script', cursive;
+  font-size: 26px;
+  color: white;
+  padding-left: 20px;
+}
+.use{
+    padding-right:20px;
+    display: flex;
+}
+.login{
+    border: none;
+    font-size: 20px;
+    text-align: center;
+    width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    cursor:pointer;
+    background-color: green;
+    color: white;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+.login:hover{
+    background-color: white;
+    color: green;
+}
+.signup{
+    border: none;
+    font-size: 20px;
+    text-align: center;
+    width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    cursor:pointer;
+
+    background-color: green;
+    color: white;
+
+    transition: background-color 0.3s ease;
+}
+.signup:hover{
+    background-color: white;
+    color: green;
+}
+
+button{
+    border: none;
+    font-size: 20px;
+    text-align: center;
+    width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    cursor:pointer;
+    background-color: green;
+    color: white;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover{
+    background-color: white;
+    color: green;
+}
+
+/* Add this to style the user's name */
+.welcome-name {
+    color: white;
+    font-size: 18px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+/* Add this to style the logout button differently (optional red theme) */
+.logout-btn {
+    background-color: #dc3545; /* Red */
+}
+
+.logout-btn:hover {
+    background-color: white;
+    color: #dc3545;
+}

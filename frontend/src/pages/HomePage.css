@@ -1,0 +1,20 @@
+.home-page {
+    min-height: 90vh;
+    padding: 30px 50px;
+}
+
+.home-page h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.products-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
+
+button{
+    margin-bottom: 10px;
+}
