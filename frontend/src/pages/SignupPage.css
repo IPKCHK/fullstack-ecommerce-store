@@ -52,7 +52,13 @@ form{
     border: none;
     font-size: 20px;
     text-align: center;
-    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* Ensures the button fits neatly inside the form container */
+    box-sizing: border-box; /* Prevents padding from pushing the button wider */
+    white-space: nowrap; /* Forces the spinner and text to stay on one line */
+    overflow: hidden;
     height: 40px;
     border-radius: 20px;
     cursor:pointer;
