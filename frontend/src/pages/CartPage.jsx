@@ -421,6 +421,179 @@
 // export default CartPage;
 
 
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import api from "../api/axios";
+// import { useAuthStore } from "../store/authStore";
+// import "./CartPage.css";
+
+// function CartPage() {
+//     const navigate = useNavigate();
+//     const { user } = useAuthStore();
+    
+//     const [items, setItems] = useState([]);
+//     const [loading, setLoading] = useState(true);
+
+//     const fetchCart = async () => {
+//         if (!user) {
+//             setLoading(false);
+//             return;
+//         }
+
+//         try {
+//             const response = await api.get("/cart");
+//             setItems(response.data.items || []);
+//         } catch (error) {
+//             console.log("Cart error:", error);
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     useEffect(() => {
+//         fetchCart();
+//     }, [user]);
+
+//     const handleRemove = async (productId) => {
+//         try {
+//             await api.delete(`/cart/${productId}`);
+//             setItems(items.filter((item) => item.product_id !== productId));
+//         } catch (error) {
+//             console.log("Remove cart error:", error);
+//             alert(error.response?.data?.message || "Failed to remove product");
+//         }
+//     };
+
+//     const handleQuantityChange = async (productId, newQuantity) => {
+//         if (newQuantity < 1) return;
+
+//         try {
+//             await api.put(`/cart/${productId}`, { quantity: newQuantity });
+            
+//             setItems(
+//                 items.map((item) =>
+//                     item.product_id === productId
+//                         ? { ...item, quantity: newQuantity }
+//                         : item
+//                 )
+//             );
+//         } catch (error) {
+//             console.log("Quantity update error:", error);
+//             alert(error.response?.data?.message || "Failed to update quantity");
+//         }
+//     };
+
+//     const handleCheckout = async () => {
+//         if (!user) {
+//             alert("Please login first");
+//             return;
+//         }
+
+//         try {
+//             await api.post("/orders");
+//             alert("Order placed successfully!");
+//             setItems([]);
+//         } catch (error) {
+//             console.log("Checkout error:", error);
+//             alert(error.response?.data?.message || "Failed to place order");
+//         }
+//     };
+
+//     if (loading) {
+//         return <div>Loading cart...</div>;
+//     }
+
+//     if (items.length === 0) {
+//         return (
+//             <div className="cart-page" style={{ textAlign: "center", padding: "50px 0" }}>
+//                 <h1>Your Cart</h1>
+//                 <p>Your cart is empty.</p>
+//                 <button 
+//                     className="second-button" 
+//                     style={{ margin: "20px auto", display: "block" }} 
+//                     onClick={() => navigate("/")}
+//                 >
+//                     Continue Shopping
+//                 </button>
+//             </div>
+//         );
+//     }
+
+//     // Dynamic Math Calculations
+//     const subtotal = items.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
+//     const shippingFee = subtotal > 1000 ? 0 : 50; // Free shipping over ₹1000
+//     const finalTotal = subtotal + shippingFee;
+
+//     return (
+//         <div className="cart-page">
+//             <h1>Your Cart</h1>
+
+//             <div className="cart-items">
+//                 {items.map((item) => (
+//                     <div className="cart-item" key={item.id}>
+//                         <img src={item.image} alt={item.name} />
+
+//                         <div>
+//                             <h3>{item.name}</h3>
+                            
+//                             {/* Explicit Math Breakdown */}
+//                             <p style={{ color: "#aaaaaa", marginBottom: "10px", fontSize: "0.95rem" }}>
+//                                 ₹{Number(item.price).toFixed(2)} &times; {item.quantity} = 
+//                                 <strong style={{ color: "#ffffff", fontSize: "1.1rem", marginLeft: "5px" }}>
+//                                     ₹{(Number(item.price) * item.quantity).toFixed(2)}
+//                                 </strong>
+//                             </p>
+
+//                             <div className="quantity-controls">
+//                                 <button onClick={() => handleQuantityChange(item.product_id, item.quantity - 1)}>
+//                                     -
+//                                 </button>
+//                                 <span>{item.quantity}</span>
+//                                 <button onClick={() => handleQuantityChange(item.product_id, item.quantity + 1)}>
+//                                     +
+//                                 </button>
+//                             </div>
+
+//                             <button onClick={() => handleRemove(item.product_id)}>
+//                                 Remove
+//                             </button>
+//                         </div>
+//                     </div>
+//                 ))}
+//             </div>
+
+//             {/* New Order Summary Box */}
+//             <div className="order-summary-box">
+//                 <h3>Order Summary</h3>
+                
+//                 <div className="summary-row">
+//                     <span>Subtotal ({items.length} items):</span>
+//                     <span>₹{subtotal.toFixed(2)}</span>
+//                 </div>
+                
+//                 <div className="summary-row">
+//                     <span>Shipping:</span>
+//                     <span>{shippingFee === 0 ? "Free" : `₹${shippingFee.toFixed(2)}`}</span>
+//                 </div>
+                
+//                 <hr className="summary-divider" />
+                
+//                 <div className="summary-row final-total">
+//                     <strong>Total:</strong>
+//                     <strong>₹{finalTotal.toFixed(2)}</strong>
+//                 </div>
+
+//                 <button onClick={handleCheckout} className="checkout-button">
+//                     Proceed to Checkout
+//                 </button>
+//             </div>
+//         </div>
+//     );
+// }
+
+// export default CartPage;
+
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
@@ -432,7 +605,13 @@ function CartPage() {
     const { user } = useAuthStore();
     
     const [items, setItems] = useState([]);
+    
+    // Page loader state
     const [loading, setLoading] = useState(true);
+    // Button loader state for checkout
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
+    // Action loader state to prevent spam-clicking quantity/remove
+    const [processingItemId, setProcessingItemId] = useState(null);
 
     const fetchCart = async () => {
         if (!user) {
@@ -455,18 +634,22 @@ function CartPage() {
     }, [user]);
 
     const handleRemove = async (productId) => {
+        setProcessingItemId(productId); // Disable buttons for this specific item
         try {
             await api.delete(`/cart/${productId}`);
             setItems(items.filter((item) => item.product_id !== productId));
         } catch (error) {
             console.log("Remove cart error:", error);
             alert(error.response?.data?.message || "Failed to remove product");
+        } finally {
+            setProcessingItemId(null);
         }
     };
 
     const handleQuantityChange = async (productId, newQuantity) => {
         if (newQuantity < 1) return;
-
+        
+        setProcessingItemId(productId); // Disable buttons for this specific item
         try {
             await api.put(`/cart/${productId}`, { quantity: newQuantity });
             
@@ -480,6 +663,8 @@ function CartPage() {
         } catch (error) {
             console.log("Quantity update error:", error);
             alert(error.response?.data?.message || "Failed to update quantity");
+        } finally {
+            setProcessingItemId(null);
         }
     };
 
@@ -489,6 +674,7 @@ function CartPage() {
             return;
         }
 
+        setIsCheckingOut(true); // Start checkout spinner
         try {
             await api.post("/orders");
             alert("Order placed successfully!");
@@ -496,11 +682,18 @@ function CartPage() {
         } catch (error) {
             console.log("Checkout error:", error);
             alert(error.response?.data?.message || "Failed to place order");
+        } finally {
+            setIsCheckingOut(false); // Stop checkout spinner
         }
     };
 
+    // Render full-page spinner while fetching data
     if (loading) {
-        return <div>Loading cart...</div>;
+        return (
+            <div className="page-loader">
+                <div className="spinner"></div>
+            </div>
+        );
     }
 
     if (items.length === 0) {
@@ -529,40 +722,56 @@ function CartPage() {
             <h1>Your Cart</h1>
 
             <div className="cart-items">
-                {items.map((item) => (
-                    <div className="cart-item" key={item.id}>
-                        <img src={item.image} alt={item.name} />
+                {items.map((item) => {
+                    const isProcessing = processingItemId === item.product_id;
+                    
+                    return (
+                        <div className="cart-item" key={item.id}>
+                            <img src={item.image} alt={item.name} />
 
-                        <div>
-                            <h3>{item.name}</h3>
-                            
-                            {/* Explicit Math Breakdown */}
-                            <p style={{ color: "#aaaaaa", marginBottom: "10px", fontSize: "0.95rem" }}>
-                                ₹{Number(item.price).toFixed(2)} &times; {item.quantity} = 
-                                <strong style={{ color: "#ffffff", fontSize: "1.1rem", marginLeft: "5px" }}>
-                                    ₹{(Number(item.price) * item.quantity).toFixed(2)}
-                                </strong>
-                            </p>
+                            <div>
+                                <h3>{item.name}</h3>
+                                
+                                {/* Explicit Math Breakdown */}
+                                <p style={{ color: "#aaaaaa", marginBottom: "10px", fontSize: "0.95rem" }}>
+                                    ₹{Number(item.price).toFixed(2)} &times; {item.quantity} = 
+                                    <strong style={{ color: "#ffffff", fontSize: "1.1rem", marginLeft: "5px" }}>
+                                        ₹{(Number(item.price) * item.quantity).toFixed(2)}
+                                    </strong>
+                                </p>
 
-                            <div className="quantity-controls">
-                                <button onClick={() => handleQuantityChange(item.product_id, item.quantity - 1)}>
-                                    -
-                                </button>
-                                <span>{item.quantity}</span>
-                                <button onClick={() => handleQuantityChange(item.product_id, item.quantity + 1)}>
-                                    +
+                                <div className="quantity-controls">
+                                    <button 
+                                        onClick={() => handleQuantityChange(item.product_id, item.quantity - 1)}
+                                        disabled={isProcessing}
+                                        style={{ opacity: isProcessing ? 0.5 : 1, cursor: isProcessing ? "not-allowed" : "pointer" }}
+                                    >
+                                        -
+                                    </button>
+                                    <span>{item.quantity}</span>
+                                    <button 
+                                        onClick={() => handleQuantityChange(item.product_id, item.quantity + 1)}
+                                        disabled={isProcessing}
+                                        style={{ opacity: isProcessing ? 0.5 : 1, cursor: isProcessing ? "not-allowed" : "pointer" }}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+
+                                <button 
+                                    onClick={() => handleRemove(item.product_id)}
+                                    disabled={isProcessing}
+                                    style={{ opacity: isProcessing ? 0.5 : 1, cursor: isProcessing ? "not-allowed" : "pointer" }}
+                                >
+                                    {isProcessing ? "Updating..." : "Remove"}
                                 </button>
                             </div>
-
-                            <button onClick={() => handleRemove(item.product_id)}>
-                                Remove
-                            </button>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
-            {/* New Order Summary Box */}
+            {/* Order Summary Box */}
             <div className="order-summary-box">
                 <h3>Order Summary</h3>
                 
@@ -583,8 +792,20 @@ function CartPage() {
                     <strong>₹{finalTotal.toFixed(2)}</strong>
                 </div>
 
-                <button onClick={handleCheckout} className="checkout-button">
-                    Proceed to Checkout
+                <button 
+                    onClick={handleCheckout} 
+                    className="checkout-button"
+                    disabled={isCheckingOut}
+                    style={{ opacity: isCheckingOut ? 0.7 : 1, cursor: isCheckingOut ? "not-allowed" : "pointer" }}
+                >
+                    {isCheckingOut ? (
+                        <>
+                            <span className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px', marginRight: '8px' }}></span>
+                            Placing Order...
+                        </>
+                    ) : (
+                        "Proceed to Checkout"
+                    )}
                 </button>
             </div>
         </div>
